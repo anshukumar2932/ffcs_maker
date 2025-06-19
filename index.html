@@ -233,7 +233,7 @@
     
     th, td {
       border: 1px solid var(--primary);
-      padding: 10px 8px;
+      padding: 8px;
       text-align: center;
       position: relative;
     }
@@ -245,6 +245,29 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       font-size: 0.9em;
+    }
+    
+    .slot-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 40px;
+    }
+    
+    .slot-code {
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    
+    .slot-class {
+      font-size: 0.85em;
+      margin-bottom: 2px;
+    }
+    
+    .slot-location {
+      font-size: 0.75em;
+      color: var(--secondary);
+      opacity: 0.8;
     }
     
     .highlight {
@@ -316,6 +339,10 @@
       button {
         padding: 8px 12px;
       }
+      
+      .slot-content {
+        min-height: 35px;
+      }
     }
     
     /* Action buttons container */
@@ -364,10 +391,76 @@
         opacity: 0.7;
       }
     }
+    
+    /* Import/Export buttons */
+    .data-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .disclaimer {
+      background: rgba(255, 100, 100, 0.15);
+      border: 1px solid var(--error);
+      padding: 12px;
+      border-radius: 5px;
+      margin: 20px auto;
+      max-width: 800px;
+      text-align: center;
+      font-size: 0.9em;
+      animation: pulseWarning 3s infinite;
+    }
+    
+    @keyframes pulseWarning {
+      0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.2); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .file-label {
+      display: inline-block;
+      padding: 9px 15px;
+      font-size: 0.95em;
+      border: 1px solid var(--primary);
+      background: linear-gradient(to bottom, rgba(0, 100, 200, 0.5), rgba(0, 50, 100, 0.5));
+      color: var(--secondary);
+      font-family: inherit;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .file-label:hover {
+      background: linear-gradient(to bottom, rgba(0, 150, 255, 0.6), rgba(0, 100, 200, 0.6));
+      text-shadow: 0 0 8px var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3);
+    }
   </style>
 </head>
 <body>
   <h1>Timetable Slot Manager</h1>
+  
+  <div class="disclaimer">
+    ⚠️ <strong>DISCLAIMER:</strong> This is a simulation tool only, not affiliated with any college's official FFCS system. 
+    Use this to help plan your slot selection, but always verify with official college systems.
+  </div>
+
+  <div class="data-actions">
+    <button id="exportBtn">EXPORT DATA</button>
+    <label for="importFile" class="file-label">IMPORT DATA</label>
+    <input type="file" id="importFile" class="file-input" accept=".json">
+  </div>
 
   <div class="control-panel">
     <div class="input-group">
@@ -423,12 +516,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr data-day="MON"><td>MON</td><td data-slot="A11">A11</td><td data-slot="B11">B11</td><td data-slot="C11">C11</td><td>Lunch</td><td data-slot="A21">A21</td><td data-slot="A14">A14</td><td data-slot="B21">B21</td><td data-slot="C21">C21</td></tr>
-      <tr data-day="TUE"><td>TUE</td><td data-slot="D11">D11</td><td data-slot="E11">E11</td><td data-slot="F11">F11</td><td>Lunch</td><td data-slot="D21">D21</td><td data-slot="E14">E14</td><td data-slot="E21">E21</td><td data-slot="F21">F21</td></tr>
-      <tr data-day="WED"><td>WED</td><td data-slot="A12">A12</td><td data-slot="B12">B12</td><td data-slot="C12">C12</td><td>Lunch</td><td data-slot="A22">A22</td><td data-slot="B14">B14</td><td data-slot="B22">B22</td><td data-slot="A24">A24</td></tr>
-      <tr data-day="THU"><td>THU</td><td data-slot="D12">D12</td><td data-slot="E12">E12</td><td data-slot="F12">F12</td><td>Lunch</td><td data-slot="D22">D22</td><td data-slot="F14">F14</td><td data-slot="E22">E22</td><td data-slot="F22">F22</td></tr>
-      <tr data-day="FRI"><td>FRI</td><td data-slot="A13">A13</td><td data-slot="B13">B13</td><td data-slot="C13">C13</td><td>Lunch</td><td data-slot="A23">A23</td><td data-slot="C14">C14</td><td data-slot="B23">B23</td><td data-slot="B24">B24</td></tr>
-      <tr data-day="SAT"><td>SAT</td><td data-slot="D13">D13</td><td data-slot="E13">E13</td><td data-slot="F13">F13</td><td>Lunch</td><td data-slot="D23">D23</td><td data-slot="D14">D14</td><td data-slot="D24">D24</td><td data-slot="E23">E23</td></tr>
+      <tr data-day="MON"><td>MON</td><td data-slot="A11"><div class="slot-content"><span class="slot-code">A11</span></div></td><td data-slot="B11"><div class="slot-content"><span class="slot-code">B11</span></div></td><td data-slot="C11"><div class="slot-content"><span class="slot-code">C11</span></div></td><td>Lunch</td><td data-slot="A21"><div class="slot-content"><span class="slot-code">A21</span></div></td><td data-slot="A14"><div class="slot-content"><span class="slot-code">A14</span></div></td><td data-slot="B21"><div class="slot-content"><span class="slot-code">B21</span></div></td><td data-slot="C21"><div class="slot-content"><span class="slot-code">C21</span></div></td></tr>
+      <tr data-day="TUE"><td>TUE</td><td data-slot="D11"><div class="slot-content"><span class="slot-code">D11</span></div></td><td data-slot="E11"><div class="slot-content"><span class="slot-code">E11</span></div></td><td data-slot="F11"><div class="slot-content"><span class="slot-code">F11</span></div></td><td>Lunch</td><td data-slot="D21"><div class="slot-content"><span class="slot-code">D21</span></div></td><td data-slot="E14"><div class="slot-content"><span class="slot-code">E14</span></div></td><td data-slot="E21"><div class="slot-content"><span class="slot-code">E21</span></div></td><td data-slot="F21"><div class="slot-content"><span class="slot-code">F21</span></div></td></tr>
+      <tr data-day="WED"><td>WED</td><td data-slot="A12"><div class="slot-content"><span class="slot-code">A12</span></div></td><td data-slot="B12"><div class="slot-content"><span class="slot-code">B12</span></div></td><td data-slot="C12"><div class="slot-content"><span class="slot-code">C12</span></div></td><td>Lunch</td><td data-slot="A22"><div class="slot-content"><span class="slot-code">A22</span></div></td><td data-slot="B14"><div class="slot-content"><span class="slot-code">B14</span></div></td><td data-slot="B22"><div class="slot-content"><span class="slot-code">B22</span></div></td><td data-slot="A24"><div class="slot-content"><span class="slot-code">A24</span></div></td></tr>
+      <tr data-day="THU"><td>THU</td><td data-slot="D12"><div class="slot-content"><span class="slot-code">D12</span></div></td><td data-slot="E12"><div class="slot-content"><span class="slot-code">E12</span></div></td><td data-slot="F12"><div class="slot-content"><span class="slot-code">F12</span></div></td><td>Lunch</td><td data-slot="D22"><div class="slot-content"><span class="slot-code">D22</span></div></td><td data-slot="F14"><div class="slot-content"><span class="slot-code">F14</span></div></td><td data-slot="E22"><div class="slot-content"><span class="slot-code">E22</span></div></td><td data-slot="F22"><div class="slot-content"><span class="slot-code">F22</span></div></td></tr>
+      <tr data-day="FRI"><td>FRI</td><td data-slot="A13"><div class="slot-content"><span class="slot-code">A13</span></div></td><td data-slot="B13"><div class="slot-content"><span class="slot-code">B13</span></div></td><td data-slot="C13"><div class="slot-content"><span class="slot-code">C13</span></div></td><td>Lunch</td><td data-slot="A23"><div class="slot-content"><span class="slot-code">A23</span></div></td><td data-slot="C14"><div class="slot-content"><span class="slot-code">C14</span></div></td><td data-slot="B23"><div class="slot-content"><span class="slot-code">B23</span></div></td><td data-slot="B24"><div class="slot-content"><span class="slot-code">B24</span></div></td></tr>
+      <tr data-day="SAT"><td>SAT</td><td data-slot="D13"><div class="slot-content"><span class="slot-code">D13</span></div></td><td data-slot="E13"><div class="slot-content"><span class="slot-code">E13</span></div></td><td data-slot="F13"><div class="slot-content"><span class="slot-code">F13</span></div></td><td>Lunch</td><td data-slot="D23"><div class="slot-content"><span class="slot-code">D23</span></div></td><td data-slot="D14"><div class="slot-content"><span class="slot-code">D14</span></div></td><td data-slot="D24"><div class="slot-content"><span class="slot-code">D24</span></div></td><td data-slot="E23"><div class="slot-content"><span class="slot-code">E23</span></div></td></tr>
     </tbody>
   </table>
 
@@ -461,6 +554,8 @@
     const facultyInput = document.getElementById("faculty");
     const locationInput = document.getElementById("location");
     const detailsBody = document.getElementById("detailsBody");
+    const exportBtn = document.getElementById("exportBtn");
+    const importFile = document.getElementById("importFile");
 
     function showStatus(msg, type) {
       status.textContent = msg;
@@ -502,6 +597,26 @@
       return false;
     }
 
+    function updateSlotDisplay(cell, className, location) {
+      const slotContent = cell.querySelector('.slot-content') || document.createElement('div');
+      slotContent.className = 'slot-content';
+      
+      if (className || location) {
+        slotContent.innerHTML = `
+          <span class="slot-code">${cell.dataset.slot}</span>
+          ${className ? `<span class="slot-class">${className}</span>` : ''}
+          ${location ? `<span class="slot-location">${location}</span>` : ''}
+        `;
+      } else {
+        slotContent.innerHTML = `<span class="slot-code">${cell.dataset.slot}</span>`;
+      }
+      
+      if (!cell.querySelector('.slot-content')) {
+        cell.innerHTML = '';
+        cell.appendChild(slotContent);
+      }
+    }
+
     function updateDetailsTable() {
       detailsBody.innerHTML = "";
       if (Object.keys(slotDetails).length === 0) {
@@ -532,9 +647,77 @@
       });
     }
 
+    function exportData() {
+      const data = {
+        slotDetails: slotDetails,
+        timestamp: new Date().toISOString()
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `timetable-data-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showStatus("✅ Data exported successfully", "success");
+    }
+
+    function importData(file) {
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          
+          if (!data.slotDetails) {
+            throw new Error("Invalid data format");
+          }
+          
+          // Clear existing data
+          Object.values(slotDetails).flat().forEach(s => {
+            s.cell.classList.remove("highlight");
+            updateSlotDisplay(s.cell);
+          });
+          Object.keys(slotDetails).forEach(k => delete slotDetails[k]);
+          
+          // Import new data
+          for (const [key, val] of Object.entries(data.slotDetails)) {
+            slotDetails[key] = val;
+            
+            val.forEach(s => {
+              s.cell = document.querySelector(`[data-slot="${s.code}"]`);
+              if (s.cell) {
+                s.cell.classList.add("highlight");
+                updateSlotDisplay(s.cell, s.className, s.location);
+              }
+            });
+          }
+          
+          updateDetailsTable();
+          updateDropdown();
+          showStatus("✅ Data imported successfully", "success");
+        } catch (err) {
+          console.error("Import error:", err);
+          showStatus("❌ Error importing data - invalid file", "error");
+        }
+      };
+      
+      reader.onerror = function() {
+        showStatus("❌ Error reading file", "error");
+      };
+      
+      reader.readAsText(file);
+    }
+
     addBtn.addEventListener("click", () => {
       const input = slotInput.value.trim().toUpperCase();
       if (!input) return showStatus("Enter slot code(s)", "error");
+      
       const codes = input.split("+").map(s => s.trim());
       const allValid = codes.every(code => /^[A-Z]\d{2}$/.test(code));
       if (!allValid) return showStatus("Invalid slot code(s)", "error");
@@ -543,25 +726,45 @@
       const faculty = facultyInput.value.trim();
       const location = locationInput.value.trim();
 
-      if (hasLunchConflict(codes)) {
-        return showStatus("❌ Cannot book both 11:40-13:10 and 13:15-14:45 on same day.", "error");
-      }
-
+      // First validate all slots before making any changes
+      const validationErrors = [];
       const details = [];
+      
+      // Check lunch conflicts first
+      if (hasLunchConflict(codes)) {
+        validationErrors.push("Cannot book both 11:40-13:10 and 13:15-14:45 on same day");
+      }
+      
+      // Check all slots are available
       for (let code of codes) {
         if (Object.values(slotDetails).some(arr => arr.find(s => s.code === code))) {
-          return showStatus(`❌ Slot ${code} already booked`, "error");
+          validationErrors.push(`Slot ${code} already booked`);
+          continue;
         }
+        
         const info = getSlotInfo(code);
-        if (!info) return showStatus(`❌ Slot ${code} not found`, "error");
+        if (!info) {
+          validationErrors.push(`Slot ${code} not found`);
+          continue;
+        }
+        
         info.code = code;
         info.className = className;
         info.faculty = faculty;
         info.location = location;
         details.push(info);
-        info.cell.classList.add("highlight");
       }
-
+      
+      if (validationErrors.length > 0) {
+        return showStatus(`❌ ${validationErrors.join(", ")}`, "error");
+      }
+      
+      // All validations passed - now update the UI
+      for (const info of details) {
+        info.cell.classList.add("highlight");
+        updateSlotDisplay(info.cell, className, location);
+      }
+      
       slotDetails[input] = details;
       updateDetailsTable();
       updateDropdown();
@@ -572,7 +775,10 @@
     removeBtn.addEventListener("click", () => {
       const selected = removeSelect.value;
       if (!selected) return;
-      slotDetails[selected].forEach(s => s.cell.classList.remove("highlight"));
+      slotDetails[selected].forEach(s => {
+        s.cell.classList.remove("highlight");
+        updateSlotDisplay(s.cell);
+      });
       delete slotDetails[selected];
       updateDetailsTable();
       updateDropdown();
@@ -580,11 +786,28 @@
     });
 
     resetBtn.addEventListener("click", () => {
-      Object.values(slotDetails).flat().forEach(s => s.cell.classList.remove("highlight"));
+      Object.values(slotDetails).flat().forEach(s => {
+        s.cell.classList.remove("highlight");
+        updateSlotDisplay(s.cell);
+      });
       Object.keys(slotDetails).forEach(k => delete slotDetails[k]);
       updateDetailsTable();
       updateDropdown();
       showStatus("♻️ All slots cleared successfully", "success");
+    });
+
+    exportBtn.addEventListener("click", exportData);
+
+    importFile.addEventListener("change", (e) => {
+      if (e.target.files.length > 0) {
+        importData(e.target.files[0]);
+        e.target.value = ''; // Reset input
+      }
+    });
+
+    // Initialize slot displays
+    document.querySelectorAll('[data-slot]').forEach(cell => {
+      updateSlotDisplay(cell);
     });
   </script>
 </body>
